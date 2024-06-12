@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "CPSC 349 - Fall 2022 - Exercise 3",
   "scripts": {
-    "start": "browser-sync start --server --startPath /posts.html --files '*.html,*.css,*.js'",
+    "start": "browser-sync start --server --startPath /posts.html --files \"*.html,*.css,*.js\"",
     "test": "standard && vnu --skip-non-html --Werror *.html"
   },
   "repository": {
