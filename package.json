@@ -17,6 +17,7 @@
     "url": "https://github.com/ProfAvery/cpsc349-exercise3/issues"
   },
   "devDependencies": {
+    "browser-sync": "^3.0.4",
     "standard": "^17.0.0"
   }
 }
