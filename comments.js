@@ -14,8 +14,6 @@ async function downloadComments (postId) {
   return comments
 }
 
-// FIXME: Remove eslint disable comment when the exercise is complete
-// eslint-disable-next-line no-unused-vars
 async function getUserName (userId) {
   const userURL = `https://jsonplaceholder.typicode.com/users/${userId}`
   const response = await fetch(userURL)
@@ -29,20 +27,61 @@ function getArticleId (comments) {
   return data.postId
 }
 
+const main = document.querySelector('main')
+
+const posts = await downloadPosts(2)
+for (const post of posts) {
+  const author = await getUserName(post.userId)
+
+  const article = document.createElement('article')
+  const body = post.body.replaceAll('\n', '<br>')
+  article.dataset.postId = post.id
+  article.innerHTML = `
+    <h2>${post.title}</h2>
+    <aside>by <span class="author">${author}</span></aside>
+    <p>
+      ${body}
+    </p>
+  `
+  main.appendChild(article)
+
+  const details = document.createElement('details')
+  details.innerHTML = `
+    <summary>See what our readers had to say...</summary>
+    <section>
+        <header>
+            <h3>Comments</h3>
+        </header>
+    </section>
+  `
+  main.appendChild(details)
+}
+
 const details = document.getElementsByTagName('details')
 for (const detail of details) {
   detail.addEventListener('toggle', async event => {
-    if (detail.open) {
-      const asides = detail.getElementsByTagName('aside')
-      const commentsWereDownloaded = asides.length > 0
-      if (!commentsWereDownloaded) {
-        const articleId = getArticleId(detail)
-        const comments = await downloadComments(articleId)
-        console.log(comments)
+    if (!detail.open) {
+      return
+    }
+
+    const asides = detail.getElementsByTagName('aside')
+    const commentsWereDownloaded = asides.length > 0
+    if (!commentsWereDownloaded) {
+      const articleId = getArticleId(detail)
+      const comments = await downloadComments(articleId)
+      for (const comment of comments) {
+        const body = comment.body.replaceAll('\n', '<br>')
+        const aside = document.createElement('aside')
+        aside.innerHTML = `
+          <p>
+            ${body}
+          <p>
+          <p><small>${comment.name}</small></p>
+        `
+
+        const section = detail.querySelector('section')
+        section.appendChild(aside)
       }
     }
   })
 }
-
-const posts = await downloadPosts()
-console.log(posts)
