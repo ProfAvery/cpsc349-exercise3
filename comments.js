@@ -14,6 +14,8 @@ async function downloadComments (postId) {
   return comments
 }
 
+// FIXME: Remove eslint disable comment when the exercise is complete
+// eslint-disable-next-line no-unused-vars
 async function getUserName (userId) {
   const userURL = `https://jsonplaceholder.typicode.com/users/${userId}`
   const response = await fetch(userURL)
